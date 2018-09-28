@@ -13,20 +13,5 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-userSchema.pre('save', function(next) {
-    if (this.isNew) {
-        passwordUtil.hashPassword(this.password)
-        .then(hashedPassword => {
-            this.password = hashedPassword;
-            next();
-        })
-        .catch(err => {
-            console.log("error while pre-save hash password", err);
-        });
-    } else {
-        next();
-    }
-});
-
 const UserModel = mongoose.model('User', userSchema);
 module.exports = UserModel;
